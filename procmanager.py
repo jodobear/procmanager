@@ -17,7 +17,7 @@ class ListProcs(Command):
             if os.path.isdir(proc + "/" + d) and d.isdigit():
                 print(d)
                 
-class SendSignal(Command): // added by Marius
+class SendSignal(Command): # added by Marius
     def __init__(self, args):
         pass
 
@@ -32,6 +32,14 @@ class ShowStatus(Command):
 
 	def run(self):
 		print([p.status() for p in self.ps])
+
+class SendSignal(Command):
+    def __init__(self, args):
+        self.signo = int(args[1])
+        self.p = int(args[0])
+
+    def run(self):
+        os.kill(self.p, self.signo)		
 
 class showMem:
     def __init__(self, args):
@@ -52,8 +60,10 @@ class showMem:
 commands = {
     "list" : lambda args: ListProcs(args),
     "show_status": lambda args: ShowStatus(args), 
-    "send_signal": lambda pid: SendSignal(pid) // added by Marius
+    "send_signal": lambda pid: SendSignal(pid) # added by Marius
     "memory_usage": lambda args: showMem(args)
+    "SendSignal" : lambda pid: SendSignal(args), # nishit
+	
 }
 
 def get_command():
